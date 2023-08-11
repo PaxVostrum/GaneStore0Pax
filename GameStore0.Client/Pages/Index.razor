@@ -1,0 +1,43 @@
+﻿@using Models;
+@using TempServ;
+
+@page "/"
+
+<PageTitle>Game Catalog</PageTitle>
+
+<h1>Game Catalog</h1>
+
+<table class="table table-striped table-striped table-hover">
+   <thead class="table-dark">
+      <th>Id</th>
+      <th>Name</th>
+      <th>Price</th>
+   </thead>
+   <tbody>
+      @foreach (var g in games.EnumerateAllGames())
+      {
+         <tr>
+            <td>@g.Id</td>
+            <td>@g.Name</td>
+            <td>@g.Price</td>
+            @* <td>@g.Genre</td>
+         <td>@g.ReleaseDate</td> *@
+         </tr>
+      }
+   </tbody>
+</table>
+
+@code {
+
+   //IEnumerable<Game> games = new Game[]{};// TempRepo.GetTempGames();
+   GamesCollection games = new();
+
+   protected override async Task OnInitializedAsync()
+   {
+      var filePath = TempFileGetter.GetTempDataFile();
+      var fileRepo = new TempFileRepo(filePath);
+
+      games = await fileRepo.ReadGamesFromFile();
+   }
+
+}
