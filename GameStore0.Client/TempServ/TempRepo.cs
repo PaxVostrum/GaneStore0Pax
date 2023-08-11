@@ -8,12 +8,23 @@ namespace GameStore0.Client.TempServ;
 
 public class TempRepo
 {
-    // public static IEnumerable<Game> GetTempGames()
-    // {
-    //     return new List<Game>(){
-    //         new Game{Id=1, Name="Mario", Price=5.5m, ReleaseDate= new DateTime(1992,10,5)},
-    //         new Game{Id=2, Name="TMNT"},
-    //         new Game{Id=3, Name="Tetris", Price=2.5m, ReleaseDate= new DateTime(1976,1,1)}
-    //     };
-    // }
+    public GamesCollection games { get; }
+
+    public TempRepo()
+    {
+        games = SetInitialGamesCollection();
+    }
+    public GamesCollection SetInitialGamesCollection()
+    {
+        games.AddToGamesCollection(new Game(1, "Mario", 5.5m));
+        games.AddToGamesCollection(new Game(2, "TMNT", 15.5m));
+        games.AddToGamesCollection(new Game(3, "Tetris", 2.5m));
+
+        return games;
+    }
+
+    public async Task AddGameToGames(Game game)
+    {
+        games.AddToGamesCollection(game);
+    }
 }
