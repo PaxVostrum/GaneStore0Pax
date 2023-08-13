@@ -37,11 +37,12 @@ else
 
 
 @code {
-   //IEnumerable<Game> games = new Game[]{};// TempRepo.GetTempGames();
-   GamesCollection games = new();
+    //IEnumerable<Game> games = new Game[]{};// TempRepo.GetTempGames();
+    GamesCollection games = new();
 
-   protected override async Task OnInitializedAsync()
-   {
-      games = await Task.Run(() => TempRepo.GetTempGames());
+    protected override async Task OnInitializedAsync()
+    {
+        TempRepo tempRepo = new();
+        games = tempRepo.games;
    }
 }

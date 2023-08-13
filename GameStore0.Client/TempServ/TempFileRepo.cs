@@ -3,19 +3,40 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using GameStore0.Client.Models;
+using GameStore0.FileServer;
+using GameStore0.FileServer.Interfaces;
 
 namespace GameStore0.Client.TempServ;
 public class TempFileRepo
 {
-    private string _path;
-    public TempFileRepo(string path) => _path = path;
+    private readonly IConfiguration _config;
+    private readonly IFileGetter _fileGetter;
+    private readonly IFileReader _fileReader;
 
+    private const string dataFilePath = "GamesDataFile:gamesDataPath";
+    private const string datafileName = "GamesDataFile:gamesFileName";
+    //private string path;
+    //public TempFileRepo(string path) => this.path = path;
+    public TempFileRepo(IConfiguration config,IFileGetter fileGetter, IFileReader fileReader)
+    {
+        _config = config;
+        _fileGetter = fileGetter;
+        _fileReader = fileReader;
+    }
     public async Task<GamesCollection> ReadGamesFromFile()
     {
         GamesCollection games = new();
+
+        string dirPath = _config.GetValue<string>(dataFilePath);  // fileGetter.GetFilePath("gamesDataPath", "gamesFileName");
+        string fileName = _config.GetValue<string>(datafileName);
+        
+        string path = _fileGetter.GetFilePath(dirPath, fileName);
+
+        var result = await _fileReader.ReadFileAsync(path);
+
         try
         {
-            using StreamReader sr = File.OpenText(_path); //StreamReader(_path);
+            using StreamReader sr = new StreamReader(path); //File.OpenText(path); 
             while (!sr.EndOfStream)
             {
                 string line = await sr.ReadLineAsync();

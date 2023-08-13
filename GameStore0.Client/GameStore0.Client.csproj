@@ -12,6 +12,10 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\GameStore0.FileServer\GameStore0.FileServer.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
     <None Update="TempServ\gamesData.csv">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>

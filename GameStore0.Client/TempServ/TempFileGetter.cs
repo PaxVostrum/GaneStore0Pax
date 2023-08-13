@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace GameStore0.Client.TempServ;
 
-public class TempFileGetter
+public class TempFileGetter //DELETE
 {
     public static string GetTempDataFile()
     {
