@@ -1,5 +1,11 @@
-﻿@using Models;
+﻿@using GameStore0.FileServer.Interfaces;
+@using Models;
 @using TempServ;
+@* @inject TempRepo tempRepo; *@
+@inject IConfiguration config;
+@inject IFileGetter fileGetter;
+@inject IFileReader fileReader;
+
 
 @page "/"
 
@@ -16,9 +22,11 @@ else
 {
    <table class="table table-striped table-striped table-hover">
       <thead class="table-dark">
-         <th>Id</th>
-         <th>Name</th>
-         <th>Price</th>
+          <tr>
+            <th>Id</th>
+            <th>Name</th>
+            <th>Price</th>
+          </tr>
       </thead>
       <tbody>
          @foreach (var g in games.EnumerateAllGames())
@@ -28,7 +36,7 @@ else
                <td>@g.Name</td>
                <td>@g.Price</td>
                @* <td>@g.Genre</td>
-         <td>@g.ReleaseDate</td> *@
+                  <td>@g.ReleaseDate</td> *@
             </tr>
          }
       </tbody>
@@ -42,7 +50,8 @@ else
 
     protected override async Task OnInitializedAsync()
     {
-        TempRepo tempRepo = new();
-        games = tempRepo.games;
-   }
+        //TempRepo tempRepo = new();
+        TempFileRepo fileRepo = new(config, fileGetter, fileReader);
+        games = await fileRepo.ReadGamesFromFile();    //tempRepo.SetInitialGamesCollection();
+    }
 }

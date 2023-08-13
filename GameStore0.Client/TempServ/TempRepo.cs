@@ -8,14 +8,10 @@ namespace GameStore0.Client.TempServ;
 
 public class TempRepo
 {
-    public GamesCollection games { get; }
-
-    public TempRepo()
+ 
+    public  GamesCollection SetInitialGamesCollection()
     {
-        games = SetInitialGamesCollection();
-    }
-    public GamesCollection SetInitialGamesCollection()
-    {
+        GamesCollection games = new();
         games.AddToGamesCollection(new Game(1, "Mario", 5.5m));
         games.AddToGamesCollection(new Game(2, "TMNT", 15.5m));
         games.AddToGamesCollection(new Game(3, "Tetris", 2.5m));
@@ -23,7 +19,7 @@ public class TempRepo
         return games;
     }
 
-    public async Task AddGameToGames(Game game)
+    public  void AddGameToGames(GamesCollection games, Game game)
     {
         games.AddToGamesCollection(game);
     }
