@@ -7,7 +7,7 @@ using GameStore0.FileServer;
 using GameStore0.FileServer.Interfaces;
 
 namespace GameStore0.Client.TempServ;
-public class TempFileRepo
+public class TempFileRepo 
 {
     private readonly IConfiguration _config;
     private readonly IFileGetter _fileGetter;
@@ -29,10 +29,16 @@ public class TempFileRepo
 
         string dirPath = _config.GetValue<string>(dataFilePath);  // fileGetter.GetFilePath("gamesDataPath", "gamesFileName");
         string fileName = _config.GetValue<string>(datafileName);
-        
-        string path = _fileGetter.GetFilePath(dirPath, fileName);
+        if (string.IsNullOrWhiteSpace(dirPath)||string.IsNullOrWhiteSpace(fileName))
+        {
+            throw new ArgumentNullException($"неверный путь к файлу данных");
+        }
+        string path = @"C:\Proj\gamesData.csv";//Path.Combine(dirPath, fileName); //_fileGetter.GetFilePath(dirPath, fileName);
 
-        var result = await _fileReader.ReadFileAsync(path);
+        if (!File.Exists(path))
+        {
+            throw new IOException($"File {path} doesn't exist");
+        }
 
         try
         {

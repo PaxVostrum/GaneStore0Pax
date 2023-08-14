@@ -15,7 +15,6 @@
 
 @if (games is null)
 {
-   <p>Loading..</p>
    <p><em>Loading..</em></p>
 }
 else
@@ -46,12 +45,12 @@ else
 
 @code {
     //IEnumerable<Game> games = new Game[]{};// TempRepo.GetTempGames();
-    GamesCollection games = new();
+    private GamesCollection? games;  // = new();
 
     protected override async Task OnInitializedAsync()
     {
-        //TempRepo tempRepo = new();
-        TempFileRepo fileRepo = new(config, fileGetter, fileReader);
-        games = await fileRepo.ReadGamesFromFile();    //tempRepo.SetInitialGamesCollection();
+        //TempFileRepo fileRepo = new(config, fileGetter, fileReader);
+        TempRepo tempRepo = new();
+        games = tempRepo.SetInitialGamesCollection(); //await fileRepo.ReadGamesFromFile(); //
     }
 }

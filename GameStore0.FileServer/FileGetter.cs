@@ -8,7 +8,7 @@ namespace GameStore0.FileServer
         public string GetFilePath(string dirKey, string gamesFileName)
         {
             if (dirKey == null || gamesFileName == null)
-                throw new ArgumentNullException($"аргумент неверен");
+                throw new ArgumentNullException($"неверный путь к файлу данных");
 
             string dirPath = ConfigurationManager.AppSettings[dirKey];
             string fileName = ConfigurationManager.AppSettings[gamesFileName];
