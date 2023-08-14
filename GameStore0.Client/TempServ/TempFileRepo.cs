@@ -61,14 +61,15 @@ public class TempFileRepo
 
     private Game ParseLineIntoGame(string line)
     {
-        string[] fields = line.Split(';');
-        if (fields.Length != 3)
-            throw new Exception($"Cannot parse order line: Text is {line}");
+        throw new NotImplementedException();
+        //string[] fields = line.Split(';');
+        //if (fields.Length != 3)
+        //    throw new Exception($"Cannot parse order line: Text is {line}");
 
-        int id = int.Parse(fields[0]);
-        string name = fields[1];
-        decimal price = decimal.Parse(fields[2]);
+        //int id = int.Parse(fields[0]);
+        //string name = fields[1];
+        //decimal price = decimal.Parse(fields[2]);
 
-        return new Game(id, name, price);
+        //return new Game(id, name, price, //ДАТА тут короче);
     }
 }

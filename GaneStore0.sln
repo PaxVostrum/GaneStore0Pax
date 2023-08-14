@@ -5,9 +5,9 @@ VisualStudioVersion = 17.0.31903.59
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GameStore0.Client", "GameStore0.Client\GameStore0.Client.csproj", "{9A2B8120-5964-458F-9239-110F5FA701EC}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GameStore0.Console", "GameStore0.Console\GameStore0.Console.csproj", "{6E57C1C3-9CE4-4BE0-BD78-16298BC4B6AF}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GameStore0.Console", "GameStore0.Console\GameStore0.Console.csproj", "{6E57C1C3-9CE4-4BE0-BD78-16298BC4B6AF}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GameStore0.FileServer", "GameStore0.FileServer\GameStore0.FileServer.csproj", "{67FA97B2-D39B-49A5-AD37-3E3225A1F1F4}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GameStore0.FileServer", "GameStore0.FileServer\GameStore0.FileServer.csproj", "{67FA97B2-D39B-49A5-AD37-3E3225A1F1F4}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
