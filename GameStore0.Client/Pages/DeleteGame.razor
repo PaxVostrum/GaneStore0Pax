@@ -1,0 +1,47 @@
+﻿@page "/deleteGame/{Game}"
+
+<div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="deleteModalLabel">@title</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                ...
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" 
+                        data-bs-dismiss="modal" @onclick="Cancel">Cancel</button>
+                <button type="button" class="btn btn-primary" 
+                                                @onclick="Confirm">Delete</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@code {
+    [Parameter]
+    public int GameToDelId { get; set; }
+    //public Game? Game { get; set; }
+
+    [Parameter] //Edit page is going to have access to this
+    public EventCallback<bool> OnCloseEC { get; set; } //мы вызовем его на этой странице, а на странице Edit произойдут действия
+
+    private string title = string.Empty;
+
+    protected override void OnParametersSet()
+    {
+        title = $"Удалить игру ?"; //{Game?.Name}
+    }
+
+    private void Confirm()
+    {
+        OnCloseEC.InvokeAsync(true);
+    }
+
+    private void Cancel()
+    {
+        OnCloseEC.InvokeAsync(false);
+    }
+}
