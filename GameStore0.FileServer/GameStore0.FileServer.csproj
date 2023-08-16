@@ -15,6 +15,10 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\GameStore0.Models\GameStore0.Models.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
     <None Update="FileData\data.csv">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>

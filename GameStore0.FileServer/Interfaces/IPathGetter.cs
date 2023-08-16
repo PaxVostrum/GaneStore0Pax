@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace GameStore0.FileServer.Interfaces
 {
-    public interface IFileGetter
+    public interface IPathGetter
     {
         string GetFilePath(string dirKey, string fileNameKey);
     }

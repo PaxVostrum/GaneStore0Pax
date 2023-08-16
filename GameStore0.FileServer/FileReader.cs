@@ -1,9 +1,6 @@
 ﻿using GameStore0.FileServer.Interfaces;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using GameStore0.Models;
+using System.Globalization;
 
 namespace GameStore0.FileServer
 {
@@ -26,6 +23,34 @@ namespace GameStore0.FileServer
             }
 
             return resultList;
+        }
+
+        public GamesCollection GetAllGames(IEnumerable<string> lines)
+        {
+            GamesCollection games = new();
+
+            foreach (string line in lines)
+            {
+                if (string.IsNullOrWhiteSpace(line))
+                    continue;
+
+                Game game = ParseLineIntoGame(line);
+                games.AddToGamesCollection(game);
+            }
+            return games;
+        }
+
+        private Game ParseLineIntoGame(string line)
+        {
+            string[] fields = line.Split(';');
+            if (fields.Length != 3)
+                throw new Exception($"Cannot parse order line: Text is {line}");
+
+            int id = int.Parse(fields[0]);
+            string name = fields[1];
+            decimal price = decimal.Parse(fields[2], CultureInfo.InvariantCulture);
+
+            return new Game(id, name, price);  //ДАТА тут короче);
         }
     }
 }

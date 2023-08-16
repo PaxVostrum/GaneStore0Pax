@@ -56,12 +56,12 @@
         {//Просто так незя, ибо при Отмене изм-я всё-равно сохр-ся:
          //game = tempRepo.GetGameById(Id); //по этому так:
             Game gameToEdit = tempRepo.GetGameById(Id);
-            game = new(gameToEdit.Id, gameToEdit.Name, gameToEdit.Price, gameToEdit.ReleaseDate, gameToEdit.Genre);
+            game = new(gameToEdit.Id, gameToEdit.Name, gameToEdit.Price); //, gameToEdit.ReleaseDate, gameToEdit.Genre);
             actionTitle = $"Edit game {game.Name}";
         }
         else
         {
-            game = new(0, string.Empty, 0, DateTime.UtcNow);
+            game = new(0, string.Empty, 0); //, DateTime.UtcNow);
             actionTitle = "Cоздаём новую";
         }
     }
