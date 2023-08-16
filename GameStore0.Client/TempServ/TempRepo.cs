@@ -9,9 +9,9 @@ public class TempRepo
     public static GamesCollection GetInitialGamesCollection()
     {
         GamesCollection games = new();
-        games.AddToGamesCollection(new Game(1, "Mario", 5.5m)); // , DateTime.UtcNow, Genre.Sport));
-        games.AddToGamesCollection(new Game(2, "TMNT", 15.5m)); // , DateTime.UtcNow, Genre.RPG));
-        games.AddToGamesCollection(new Game(3, "Tetris", 2.5m)); // , DateTime.UtcNow, Genre.Strategy));
+        games.AddToGamesCollection(new Game(1, "Mario", 5.5m, DateTime.UtcNow, Genre.Sport));
+        games.AddToGamesCollection(new Game(2, "TMNT", 15.5m , DateTime.UtcNow, Genre.RPG));
+        games.AddToGamesCollection(new Game(3, "Tetris", 2.5m , DateTime.UtcNow, Genre.Strategy));
 
         return games;
     }

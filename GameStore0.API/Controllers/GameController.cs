@@ -1,5 +1,7 @@
-﻿using GameStore0.API.TempFileRepo;
+﻿using GameStore0.API.Controllers;
+using GameStore0.API.TempFileRepo;
 using GameStore0.FileServer;
+using GameStore0.FileServer.InMemoryData;
 using GameStore0.FileServer.Interfaces;
 using GameStore0.Models;
 using Microsoft.AspNetCore.Mvc;
@@ -12,50 +14,26 @@ namespace GameStore0.API.Controllers
     [Route("api/[controller]")]
     public class GameController : ControllerBase //USES FILE
     {
-        private readonly ITempFileRepo _fileRepo;
-        private readonly IFileReader _fileReader;
-        private string _path;
-        
-        private GamesCollection _gamesCollection;  //IEnumerable<Game> //Чтоб 2жды не читать из файла
+        private readonly IMemoryRepo _repo;
 
+        private GamesCollection _gamesCollection;
 
-        public GameController(ITempFileRepo fileRepo, IFileReader fileReader)
+        public GameController(IMemoryRepo repo)  //ITempFileRepo fileRepo, IFileReader fileReader)
         {
-            _fileRepo = fileRepo;
-            _fileReader = fileReader;
-            SetUpFilePath();
-
-            Task.Run(async ()=> await GetInitailData());
+            _repo = repo;
+            RefreshData();
         }
-        private void SetUpFilePath() => _path = _fileRepo.GetFilePath();
-       
 
-        private async Task GetInitailData()
+        private void RefreshData()
         {
-            var lines = await _fileReader.ReadFileAsync(_path);
-
-            _gamesCollection = _fileReader.GetAllGames(lines);
+            _gamesCollection = MemoryRepo.GamesCollection;
         }
 
 
-        // GET: api/<GameController>
-        [HttpGet("GetAllLines")]
-        public async Task<IActionResult> GetAllLinesFromFile()  //Task<IEnumerable<string>>
+        [HttpGet("GetAllGames")]
+        public async Task<IActionResult> GetAllGames()  //Task<IEnumerable<string>>
         {
-            var result = await _fileReader.ReadFileAsync(_path); 
-
-            return Ok(result);
-        }
-
-
-        [HttpGet("GetGames")]
-        public async Task<IActionResult> GetGames()  //Task<IEnumerable<string>>
-        {
-            //var lines = await _fileReader.ReadFileAsync(_path);
-            if (_gamesCollection is null)
-                await GetInitailData();
-
-            var result = _gamesCollection.EnumerateAllGames(); //_fileReader.GetAllGames(lines).EnumerateAllGames();
+            var result = _gamesCollection.EnumerateAllGames();
 
             return Ok(result);
         }
@@ -64,21 +42,19 @@ namespace GameStore0.API.Controllers
         [HttpGet("GetGameById/{id}")]
         public async Task<IActionResult> GetGameById(int id)
         {
-            if (_gamesCollection is null)
-                await GetInitailData();
-
-            var result = _gamesCollection.EnumerateAllGames().FirstOrDefault(g => g.Id == id);
+            var result = _repo.GetGameById(id);
 
             return Ok(result);
         }
 
         // POST api/<GameController>
         [HttpPost]
-        public async Task<IActionResult> Post([FromBody] string value)
+        public async Task<IActionResult> Post(Game game) //[FromBody] 
         {
-
-
-            return Ok();
+            //int was = MemoryRepo.GetInitialGamesCollection().Count(); 
+            _repo.AddGameToGames(MemoryRepo.GamesCollection, game);
+            RefreshData();
+            return Ok("done!");
         }
 
 
@@ -91,9 +67,72 @@ namespace GameStore0.API.Controllers
 
         // DELETE api/<GameController>/5
         [HttpDelete("{id}")]
-        public void Delete(int id)
+        public async Task<IActionResult> Delete(int id)
         {
-
+            _repo.DeleteGame(MemoryRepo.GamesCollection, id);
+            RefreshData();
+            return Ok("done!");
         }
     }
 }
+
+
+//private readonly ITempFileRepo _fileRepo;
+//private readonly IFileReader _fileReader;
+//private string _path;
+
+//private GamesCollection _gamesCollection;  //IEnumerable<Game> //Чтоб 2жды не читать из файла
+
+
+//public GameController(ITempFileRepo fileRepo, IFileReader fileReader)
+//{
+//    _fileRepo = fileRepo;
+//    _fileReader = fileReader;
+//    SetUpFilePath();
+
+//    Task.Run(async () => await GetInitailData());
+//}
+//private void SetUpFilePath() => _path = _fileRepo.GetFilePath();
+
+
+//private async Task GetInitailData()
+//{
+//    var lines = await _fileReader.ReadFileAsync(_path);
+
+//    _gamesCollection = _fileReader.GetAllGames(lines);
+//}
+
+
+//// GET: api/<GameController>
+//[HttpGet("GetAllLines")]
+//public async Task<IActionResult> GetAllLinesFromFile()  //Task<IEnumerable<string>>
+//{
+//    var result = await _fileReader.ReadFileAsync(_path);
+
+//    return Ok(result);
+//}
+
+
+//[HttpGet("GetGames")]
+//public async Task<IActionResult> GetGames()  //Task<IEnumerable<string>>
+//{
+//    //var lines = await _fileReader.ReadFileAsync(_path);
+//    if (_gamesCollection is null)
+//        await GetInitailData();
+
+//    var result = _gamesCollection.EnumerateAllGames(); //_fileReader.GetAllGames(lines).EnumerateAllGames();
+
+//    return Ok(result);
+//}
+
+//// GET api/<GameController>/5
+//[HttpGet("GetGameById/{id}")]
+//public async Task<IActionResult> GetGameById(int id)
+//{
+//    if (_gamesCollection is null)
+//        await GetInitailData();
+
+//    var result = _gamesCollection.EnumerateAllGames().FirstOrDefault(g => g.Id == id);
+
+//    return Ok(result);
+//}

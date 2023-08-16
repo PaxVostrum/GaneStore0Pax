@@ -1,5 +1,6 @@
 using GameStore0.API.TempFileRepo;
 using GameStore0.FileServer;
+using GameStore0.FileServer.InMemoryData;
 using GameStore0.FileServer.Interfaces;
 using System;
 
@@ -12,8 +13,7 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-builder.Services.AddScoped<ITempFileRepo,TempFileRepo>();
-builder.Services.AddScoped<IFileReader,FileReader>();
+builder.Services.AddScoped<IMemoryRepo, MemoryRepo>();
 
 var app = builder.Build();
 

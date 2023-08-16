@@ -51,7 +51,7 @@ namespace GameStore0.FileServer
             string name = fields[1];
             decimal price = decimal.Parse(fields[2], CultureInfo.InvariantCulture);
 
-            return new Game(id, name, price);  //ДАТА тут короче);
+            return new Game(id, name, price, DateTime.Now);  //ДАТА тут короче);
         }
     }
 }

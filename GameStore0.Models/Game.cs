@@ -15,11 +15,11 @@ namespace GameStore0.Models
 
         public Genre? Genre { get; set; }
 
-        public Game(int id, string name, decimal price)//, DateTime date, Genre? genre = null) //string genre, DateTime date
+        public Game(int id, string name, decimal price, DateTime date, Genre? genre = null) //string genre, DateTime date
         {
             Id = id; Name = name; Price = price;
-            //ReleaseDate = date;
-            //Genre = genre;
+            ReleaseDate = date;
+            Genre = genre;
         }
     }
 }
