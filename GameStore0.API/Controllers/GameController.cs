@@ -10,24 +10,39 @@ namespace GameStore0.API.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
-    public class GameController : ControllerBase
+    public class GameController : ControllerBase //USES FILE
     {
         private readonly ITempFileRepo _fileRepo;
         private readonly IFileReader _fileReader;
+        private string _path;
+        
+        private GamesCollection _gamesCollection;  //IEnumerable<Game> //Чтоб 2жды не читать из файла
+
 
         public GameController(ITempFileRepo fileRepo, IFileReader fileReader)
         {
             _fileRepo = fileRepo;
             _fileReader = fileReader;
+            SetUpFilePath();
+
+            Task.Run(async ()=> await GetInitailData());
         }
+        private void SetUpFilePath() => _path = _fileRepo.GetFilePath();
+       
+
+        private async Task GetInitailData()
+        {
+            var lines = await _fileReader.ReadFileAsync(_path);
+
+            _gamesCollection = _fileReader.GetAllGames(lines);
+        }
+
 
         // GET: api/<GameController>
         [HttpGet("GetAllLines")]
         public async Task<IActionResult> GetAllLinesFromFile()  //Task<IEnumerable<string>>
         {
-            string path = _fileRepo.GetFilePath();
-
-            var result = await _fileReader.ReadFileAsync(path); 
+            var result = await _fileReader.ReadFileAsync(_path); 
 
             return Ok(result);
         }
@@ -36,28 +51,36 @@ namespace GameStore0.API.Controllers
         [HttpGet("GetGames")]
         public async Task<IActionResult> GetGames()  //Task<IEnumerable<string>>
         {
-            string path = _fileRepo.GetFilePath();
+            //var lines = await _fileReader.ReadFileAsync(_path);
+            if (_gamesCollection is null)
+                await GetInitailData();
 
-            var lines = await _fileReader.ReadFileAsync(path);
-
-            var result = _fileReader.GetAllGames(lines).EnumerateAllGames();
+            var result = _gamesCollection.EnumerateAllGames(); //_fileReader.GetAllGames(lines).EnumerateAllGames();
 
             return Ok(result);
         }
 
         // GET api/<GameController>/5
-        [HttpGet("{id}")]
-        public string Get(int id)
+        [HttpGet("GetGameById/{id}")]
+        public async Task<IActionResult> GetGameById(int id)
         {
-            return "value";
+            if (_gamesCollection is null)
+                await GetInitailData();
+
+            var result = _gamesCollection.EnumerateAllGames().FirstOrDefault(g => g.Id == id);
+
+            return Ok(result);
         }
 
         // POST api/<GameController>
         [HttpPost]
-        public void Post([FromBody] string value)
+        public async Task<IActionResult> Post([FromBody] string value)
         {
 
+
+            return Ok();
         }
+
 
         // PUT api/<GameController>/5
         [HttpPut("{id}")]

@@ -11,5 +11,6 @@ namespace GameStore0.FileServer.Interfaces
     {
         Task<IEnumerable<string>> ReadFileAsync(string path);
         GamesCollection GetAllGames(IEnumerable<string> lines);
+        //Task<Game> GetAGame(int id);
     }
 }

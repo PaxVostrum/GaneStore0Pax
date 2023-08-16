@@ -25,6 +25,7 @@ namespace GameStore0.FileServer
             return resultList;
         }
 
+
         public GamesCollection GetAllGames(IEnumerable<string> lines)
         {
             GamesCollection games = new();
