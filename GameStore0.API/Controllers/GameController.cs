@@ -43,15 +43,21 @@ namespace GameStore0.API.Controllers
         public async Task<IActionResult> GetGameById(int id)
         {
             var result = _repo.GetGameById(id);
-
+            if (result is null)
+            {
+                return NotFound($"game at id{id} not found");
+            }
             return Ok(result);
         }
 
         // POST api/<GameController>
         [HttpPost]
-        public async Task<IActionResult> Post(Game game) //[FromBody] 
+        public async Task<IActionResult> Post([FromBody] Game game) // 
         {
             //int was = MemoryRepo.GetInitialGamesCollection().Count(); 
+            if (game is null)
+                return BadRequest();
+
             _repo.AddGameToGames(MemoryRepo.GamesCollection, game);
             RefreshData();
             return Ok("done!");
@@ -60,13 +66,13 @@ namespace GameStore0.API.Controllers
 
         // PUT api/<GameController>/5
         [HttpPut("{id}")]
-        public void Put(int id, [FromBody] string value)
+        public void Put(int id, [FromBody] Game game)
         {
 
         }
 
         // DELETE api/<GameController>/5
-        [HttpDelete("{id}")]
+        [HttpDelete("DeleteGame/{id}")]
         public async Task<IActionResult> Delete(int id)
         {
             _repo.DeleteGame(MemoryRepo.GamesCollection, id);

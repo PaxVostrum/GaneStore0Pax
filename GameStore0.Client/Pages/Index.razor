@@ -1,5 +1,6 @@
 ﻿@using GameStore0.FileServer.Interfaces;
 @page "/"
+@inject HttpMemoryRepo _repo;
 
 <PageTitle>Game Catalog</PageTitle>
 
@@ -29,7 +30,7 @@ else
          </tr>
       </thead>
       <tbody>
-         @foreach (var g in games.EnumerateAllGames())
+         @foreach (var g in games)
          {
             <tr>
                <td>@g.Id</td>
@@ -48,13 +49,15 @@ else
 
 
 @code {
-    //IEnumerable<Game> games = new Game[]{};// TempRepo.GetTempGames();
-    private GamesCollection? games; // = new();
+    IEnumerable<Game> games = new Game[]{};// TempRepo.GetTempGames();
+    //private GamesCollection? games; // = new();
 
     protected override async Task OnInitializedAsync()
     {
         //TempFileRepo fileRepo = new(config, fileGetter, fileReader);
-        games = TempRepo.GamesCollection; //GetInitialGamesCollection(); //await fileRepo.ReadGamesFromFile(); //
+        games = await _repo.GetGames(); //TempRepo.GamesCollection; //GetInitialGamesCollection(); //await fileRepo.ReadGamesFromFile(); //
+
+
     }
 
 }

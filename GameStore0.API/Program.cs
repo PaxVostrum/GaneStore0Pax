@@ -15,7 +15,16 @@ builder.Services.AddSwaggerGen();
 
 builder.Services.AddScoped<IMemoryRepo, MemoryRepo>();
 
+builder.Services.AddCors(policy =>
+{
+    policy.AddPolicy("OpenCors", opt =>
+        opt.AllowAnyOrigin(). //wont talk to api from another locations (another url)
+        AllowAnyHeader(). //if you pass headers along with ur api it may block them
+        AllowAnyMethod()); //only alows get, won't allow some other (delete, put)});
+});
+
 var app = builder.Build();
+app.UseCors("OpenCors"); //не забываем использовать
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
