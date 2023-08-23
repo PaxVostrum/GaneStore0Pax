@@ -12,7 +12,7 @@ async Task DoWork(IFileReader fileReader)
 
     // var result = await fileReader.ReadFileAsync(path);
 	
-	var result = new string[]{"one","two","three"};
+	var result = new string[]{"one","two","three", "four", "five"};
 	
     foreach (var item in result)
     {
